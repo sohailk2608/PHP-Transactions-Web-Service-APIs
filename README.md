@@ -3,19 +3,29 @@ Following is a Restful Webservice that can enter Data into Database and retrieve
 
 Please scroll down to the bottom portion of this README for Prerequisites listing and Environment Setup.
 
+PHP project is named "Transactions" - stored in the "transactions" folder
+SoapUI Project is named "CustomerTransactions-soapui-project.xml" found in the root project folder
+
 ### Calling the APIs using soapUI
-The Restful APIs can be called using any Restful Tool such as Postman, Rest Client, Easy Rest, etc. I have used SoapUI as a platform for calling the services.
-Its Project zip can be found in the root directory with file name CustomerTransactions-SoapUI-Project.zip.
-it contains Various Assertions and steps for calling the API and validating the response.
-Install soapUI 5.4.0 and import the packaged project from inside the soapUI.
+The Restful APIs can be called using any Restful Tool such as Postman, Rest Client, Easy Rest, etc. 
+I have used SoapUI as a platform for calling the services because it provides advanced Test Automation features using Groovy Script.
+I have added a simple Groovy script that will extract the Last Transacton ID from the Transaction List and process it further for calling other APIs
+
+To use SoapUI to make the API Calls, Please follow the below steps:
+1. Install SoapUI free version 5.4.0 from smartbear website. (https://www.soapui.org/downloads/soapui.html)
+2. Open SoapUI and go to File->Import Project
+3. Select the soapUI project XML file named "CustomerTransactions-soapui-project.xml" found in the project folder
+4. Expand the project and open the testsuit named "SanityAutomationTestSuite".
+5. Run the Testsuit and you will see the Execution results
+6. SoapUI project also contains Various Assertions and steps for calling the API and validating the response.
 
 
 ## Following are the Resources and their Calling methods:
 
 Endpoint : http://transactions
 
-1. Get all customers activity details:
-Function: It responds with all the list of Transctions that was recorded inside the database.
+### 1. Get all Transactions:
+Function: The API responds with all the list of Transctions that were recorded inside the database.
 Verb: GET
 Content-Type: application/json
 Resource: /transactionservice/transaction
@@ -42,7 +52,7 @@ Sample Response:
    }
 ]
 
-2. Get Single Transaction Detail from Database:
+### 2. Get Transaction Details from Database:
 Function: It accepts one transaction ID in reqest and responds with details of that Transaction ID.
 Verb: GET
 Content-Type: application/json
@@ -57,7 +67,7 @@ Sample Response:
    "type": "Transportation"
 }]
 
-3. Get Transactions by Type
+### 3. Get Transactions by Type
 Function: Get Transaction list from database with a Type passed in the parameter
 Verb: GET
 Content-Type: application/json
@@ -80,7 +90,7 @@ Sample Response:
    }
 ]
 
-4. Add a Transaction into Database
+### 4. Add a Transaction into Database
 Function: The API Adds a Transaction into the database for the transction ID passed in the parameter.
 Verb: PUT (Generally Add Operations are sent using POST however, I have used PUT as per the request)
 Resource: /transactionservice/transaction/{transaction_id}
@@ -96,7 +106,7 @@ Sample Response:
 
 {"text": "Customer Entry Added Successfully"}
 
-5. List all transactions linked through a common parent_id
+### 5. List all transactions linked through a common parent_id
 Function: This provides a List of all transactions that are transitively linked by their parent_id to transaction_id
 verb: GET
 Resource: /transactionservice/checklink/{transaction_id}
@@ -129,7 +139,7 @@ Sample Response:
    }
 ]
 
-6. Sum of 
+### 6. Sum of 
 Function This provides a sum of all transactions that are transitively linked by their parent_id to transaction_id
 verb: GET
 Resource: /transactionservice/sum/{transaction_id}
@@ -143,8 +153,9 @@ Sample Response:
 1. Install Xampp ver. 1.8.3 or later in the "C:\xampp" directory 
 (Alternatively you can install individual packages of 
 Apache Version 2.4.9 and phpMyAdmin version 4.8.0 or later)
-2. Composer for windows, installed (for Developers)
-3. Slim framework installed (for Developers)
+2. SoapUI Version 5.4.0 or above installed in the system
+3. Composer for windows, installed (for Developers)
+4. Slim framework installed (for Developers)
 
 ### Environment Setup:
 
