@@ -5,6 +5,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 $app = new \Slim\App;
 
 // Get all customers activity details
+// Return - Array of Transaction details
+
 $app->get('/transactionservice/transaction', 
 function(Request $request, Response $response){
     $sql = "SELECT * FROM customeractivity";
@@ -26,7 +28,7 @@ function(Request $request, Response $response){
 
     } catch(PDOException $e){
         
-        return $response->withStatus(200)
+        return $response->withStatus(400)
         ->withHeader('Content-Type', 'application/json')
         ->write('{error":{"text": '.$e->getMessage().'"}'.'}');
 
@@ -34,6 +36,8 @@ function(Request $request, Response $response){
 });
 
 // Get Single Transaction Detail from Database
+// Param - transaction_id
+// Return - Array of Transaction details of the Transaction_ID passed in the parameter
 $app->get('/transactionservice/transaction/{transaction_id}', 
 function(Request $request, Response $response){
     $transaction_id =  $request->getAttribute('transaction_id');
@@ -54,13 +58,15 @@ function(Request $request, Response $response){
 
     } catch(PDOException $e){
         //echo '{error":{"text": '.$e->getMessage().'}';
-        return $response->withStatus(200)
+        return $response->withStatus(400)
         ->withHeader('Content-Type', 'application/json')
         ->write('{error":{"text": '.$e->getMessage().'"}'.'}');
     }
 });
 
 // Get Transaction list from database with a Type passed in the parameter
+// Param - Transaction type
+// Return - Array of Transaction details of the Transaction type passed in the parameter
 $app->get('/transactionservice/types/{type}',
 function(Request $request, Response $response){
     $type =  $request->getAttribute('type');
@@ -82,13 +88,15 @@ function(Request $request, Response $response){
 
     } catch(PDOException $e){
         
-        return $response->withStatus(200)
+        return $response->withStatus(400)
         ->withHeader('Content-Type', 'application/json')
         ->write('{error":{"text": '.$e->getMessage().'"}'.'}');
     }
 });
 
 // Add a Transaction for Customer ID
+// Param - transaction_id, parent_id, transaction amount, transaction type
+// Return - Success failure message for Transaction entry
 $app->put('/transactionservice/transaction/{transaction_id}', 
 function(Request $request, Response $response){
     $transaction_id =  $request->getAttribute('transaction_id');
@@ -123,13 +131,15 @@ function(Request $request, Response $response){
         
     } catch(PDOException $e){
         //echo '{error":{"text": '.$e->getMessage().'}';
-        return $response->withStatus(200)
+        return $response->withStatus(400)
         ->withHeader('Content-Type', 'application/json')
         ->write('{error":{"text": '.$e->getMessage().'"}'.'}');
     }
 });
 
 // A List of all transactions that are transitively linked by their parent_id to transaction_id
+// Param - transaction_id
+// Return - Array of Transactions that are transitively linked by their parent_id to the transaction_id
 $app->get('/transactionservice/checklink/{transaction_id}', 
 function(Request $request, Response $response){
     $transaction_id =  $request->getAttribute('transaction_id');
@@ -151,13 +161,15 @@ function(Request $request, Response $response){
 
     } catch(PDOException $e){
         
-        return $response->withStatus(200)
+        return $response->withStatus(400)
         ->withHeader('Content-Type', 'application/json')
         ->write('{error":{"text": '.$e->getMessage().'"}'.'}');
     }
 });
 
 // A sum of all transactions that are transitively linked by their parent_id to transaction_id
+// Param - transaction_id
+// Return - A sum of Transactions that are transitively linked by their parent_id to the transaction_id
 $app->get('/transactionservice/sum/{transaction_id}', 
 function(Request $request, Response $response){
     $transaction_id =  $request->getAttribute('transaction_id');
@@ -179,7 +191,7 @@ function(Request $request, Response $response){
 
     } catch(PDOException $e){
         
-        return $response->withStatus(200)
+        return $response->withStatus(400)
         ->withHeader('Content-Type', 'application/json')
         ->write('{error":{"text": '.$e->getMessage().'"}'.'}');
     }
